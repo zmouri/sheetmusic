@@ -1,10 +1,10 @@
 <title>Sheet Music Generator</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <meta name="description" content="Generate, play, and print random sheet music for practicing notes and fingering" />
-<link rel="stylesheet" href="/style/style.css" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="stylesheet" href="style/style.css" />
+<link rel="shortcut icon" href="favicon.ico" />
 <link rel="canonical" href="http://www.randomsheetmusic.com/" />
-<script type="text/javascript" src="/js/abcjs_plugin_1.0.7-min.js"></script>
+<script type="text/javascript" src="js/abcjs_plugin_2.0-min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 <script type="text/javascript">
 

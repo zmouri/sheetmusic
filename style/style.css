@@ -15,17 +15,17 @@
 }
 
 body
-    
+.notelist {
+	margin-top: 0px;
+}
+
 .notelist li {
 	display: inline;
 	list-style-type: none;
-	padding-right: 38px;
 }
 
 .notediv {
 	position: relative;
-	top: -100px;
-	left: 20px;
 }
 
 .error {
@@ -40,12 +40,19 @@ body
 	float: right;
 }
 
-.footerdiv {
-	text-align: center;'
+
+/*
+Sticky Footer by Ryan Fait
+http://ryanfait.com/
+*/
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	margin: 0 auto -155px; /* the bottom margin is the negative value of the footer's height */
+}
+footer, .push {
+	height: 155px; /* '.push' must be the same height as 'footer' */
 }
 
-.footerlist li {
-	display: inline;
-	list-style-type: none;
-	padding-right: 5px;
-}
