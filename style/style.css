@@ -1,0 +1,51 @@
+@media print {
+	body * {
+		visibility: hidden;
+	}
+	
+	svg, svg * {
+		visibility: visible;
+	}
+	
+	svg {
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+}
+
+body
+    
+.notelist li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 38px;
+}
+
+.notediv {
+	position: relative;
+	top: -100px;
+	left: 20px;
+}
+
+.error {
+	color: red;
+}
+
+.print {
+	width: 770px;
+}
+
+.print input {
+	float: right;
+}
+
+.footerdiv {
+	text-align: center;'
+}
+
+.footerlist li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 5px;
+}
