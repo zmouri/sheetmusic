@@ -9,11 +9,16 @@
 	$tempo = 70;
 	$title = 'Sheet Music';
 
-	if(empty($_REQUEST["chkNoteLength"]) || empty($_REQUEST["chkNoteValue"])) {
-		$music = "Something went wrong generating music! Please hit back and try again.";
+	if(empty($noteLengths) || empty($noteValues) || !is_numeric($measureNumber)) {
+		$errorMessage = "Something went wrong generating music! Please hit back and try again.";
+		$music = "";
 	} else {
+		if((int)($measureNumber) >= 5000) {
+			$errorMessage = "Too many measures! Was only able to generate 5000.";
+			$measureNumber = 5000;
+		}
 		//$rests = $_REQUEST["chkRests"];
-		$musicGenerator = new MusicGenerator($measureNumber, $noteLengths, $noteValues, $selKey, $title);
+		$musicGenerator = new MusicGenerator((int)$measureNumber, $noteLengths, $noteValues, $selKey, $title);
 		$music = $musicGenerator->generateABC();
 	}
 ?>
@@ -47,6 +52,7 @@
 	<input id="btnRefresh" name="btnRefresh" type="button" value="Re-generate!" />
 	<div><label id="lblTempo" for="txtTempo">Tempo: </label><input id="txtTempo" name="txtTempo" type="text" value="<?php echo $tempo; ?>" /></div>
 	<div class="print"><input id="btnPrint" name="btnPrint" type="button" value="Print!" /></div>
+	<div id="error"><?php echo $errorMessage;?></div>
 	<div id="notation">
 		<?php echo $music;?>
 	</div>
