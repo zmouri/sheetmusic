@@ -8,9 +8,14 @@
 
 	$tempo = 70;
 	$title = 'Sheet Music';
-	//$rests = $_REQUEST["chkRests"];
-	$musicGenerator = new MusicGenerator($measureNumber, $noteLengths, $noteValues, $selKey, $title);
-	$music = $musicGenerator->generateABC();
+
+	if(empty($_REQUEST["chkNoteLength"]) || empty($_REQUEST["chkNoteValue"])) {
+		$music = "Something went wrong generating music! Please hit back and try again.";
+	} else {
+		//$rests = $_REQUEST["chkRests"];
+		$musicGenerator = new MusicGenerator($measureNumber, $noteLengths, $noteValues, $selKey, $title);
+		$music = $musicGenerator->generateABC();
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
