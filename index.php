@@ -8,6 +8,8 @@
 	$noteValues = array_key_exists("chkNoteValue", $_REQUEST) ? $_REQUEST["chkNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES_NO_REST));	// default is all of them
 	$selectedKey = array_key_exists("selKey", $_REQUEST) ? $_REQUEST["selKey"] : "C";
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
+	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
+
 
 	$keySignature = new KeySignature();
 	$signatureList = $keySignature->getKeySignatures();
@@ -144,6 +146,10 @@
 		<input type="button" id="btnFiveFinger" value="5-Finger" />
 		<span id="spnErrorNote" class="error" style="display: none"></span>
 		<div><label id="lblRests" for="chkRests">Generate rests?: </label><input id="chkRests" name="chkRests" type="checkbox" value="true" <?= $rests ? "checked" : "" ?> /></div>
+		<div>
+			<label id="lblSharpsFlats" for="chkSharpsFlats">Generate random sharps/flats?: </label><input id="chkSharpsFlats" name="chkSharpsFlats" type="checkbox" value="true" <?= $sharpsFlats ? "checked" : "" ?> />
+			<span>(These currently do not take the key into account, so might look weird if anything other than "C" is selected)</span>
+		</div>
 		<div id="sampleMusic"><?php echo $keyScales[$selectedKey]; ?></div>
 		<div class="notediv">
 			<ul class="notelist">

@@ -16,14 +16,16 @@ class MusicGenerator {
 	private $measureCounter;
 	private $title;
 	private $rests;
+	private $sharpsFlats;
 
-	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests) {
+	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats) {
 		$this->measureNumber = $numMeasures;
 		$this->noteLengthArr = $lengths;
 		$this->noteValueArr = $values;
 		$this->keySignature = $keySignature;
 		$this->title = $title;
 		$this->rests = $rests;
+		$this->sharpsFlats = $sharpsFlats;
 	}
 
 	public function generateABC() {
@@ -58,12 +60,15 @@ class MusicGenerator {
 			}
 			$calculatedLength = pow(2, $note->length);
 
+			// print the note
+			$output .= $note->modifier;
+			$output .= NoteGenerator::$NOTE_VALUES[$note->value];
+
 			// determine bar and print if necessary
 			// assumes 4/4 time - TODO extend to support any time
 			$this->beatCounter += 4 / $calculatedLength;
 			if($this->beatCounter == 4) {
 				// exactly 4 beats, print the note and a bar
-				$output .= NoteGenerator::$NOTE_VALUES[$note->value];
 				if($calculatedLength != 1) {
 					$output .= "/$calculatedLength";
 				}
@@ -74,16 +79,11 @@ class MusicGenerator {
 				// modify the time on the note to make an even bar
 				// TODO add support for ties
 				$currentBar = 4 / $calculatedLength - ($this->beatCounter - 4);
-
-				// print note for the current bar
-				$output .= NoteGenerator::$NOTE_VALUES[$note->value];
 				$output .= $this->convertFraction($currentBar / 4);
 				$output .= $this->printBar();
 			}
 			else {
-				// less than 4 beats
-				// no bar yet, print a note
-				$output .= NoteGenerator::$NOTE_VALUES[$note->value];
+				// less than 4 beats, don't print the bar
 				if($calculatedLength != 1) {
 					$output .= "/$calculatedLength";
 				}
@@ -102,7 +102,7 @@ class MusicGenerator {
 		require_once dirname(__FILE__) . '/NoteGenerator.php';
 
 		$noteGenerator = new NoteGenerator();
-		$note = $noteGenerator->generate($this->noteLengthArr, $this->noteValueArr, $this->rests);
+		$note = $noteGenerator->generate($this->noteLengthArr, $this->noteValueArr, $this->rests, $this->sharpsFlats);
 
 		return $note;
 	}

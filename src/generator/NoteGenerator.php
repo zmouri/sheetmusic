@@ -56,7 +56,7 @@ class NoteGenerator {
 		'Eighth'
 	);
 
-	function generate($validNoteLengths, $validNoteValues, $rests) {
+	function generate($validNoteLengths, $validNoteValues, $rests, $sharpsFlats) {
 		require_once dirname(__FILE__) . '/../domain/Note.php';
 
 		if($rests) {
@@ -72,6 +72,19 @@ class NoteGenerator {
 			$noteLength = array_rand(self::$NOTE_LENGTHS);
 		}
 
-		return new Note($noteValue, $noteLength);
+		// generate a random modifier
+		$noteModifier = "";
+		if($sharpsFlats) {
+			// 25% chance for a sharp or flat
+			$rand = random_int(1,8);
+			if($rand === 7) {
+				$noteModifier = "^";
+			} elseif($rand === 8) {
+				$noteModifier = "_";
+			} else {
+				$noteModifier = "";
+			}
+		}
+		return new Note($noteValue, $noteLength, $noteModifier);
 	}
 }
