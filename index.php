@@ -5,8 +5,9 @@
 
 	$measureNumber = array_key_exists("txtMeasureNumber", $_REQUEST) ? $_REQUEST["txtMeasureNumber"] : "30";
 	$noteLengths = array_key_exists("chkNoteLength", $_REQUEST) ? $_REQUEST["chkNoteLength"] : range(0, count(NoteGenerator::$NOTE_LENGTHS));	// default is all of them
-	$noteValues = array_key_exists("chkNoteValue", $_REQUEST) ? $_REQUEST["chkNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES));	// default is all of them
+	$noteValues = array_key_exists("chkNoteValue", $_REQUEST) ? $_REQUEST["chkNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES_NO_REST));	// default is all of them
 	$selectedKey = array_key_exists("selKey", $_REQUEST) ? $_REQUEST["selKey"] : "C";
+	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 
 	$keySignature = new KeySignature();
 	$signatureList = $keySignature->getKeySignatures();
@@ -15,7 +16,8 @@
 						->withReferenceNumber("1")
 						->withNoteLength("1/1")
 						->withMacro("")	// hides the time signature
-						->withKey($signature)						->withNoteList(NoteGenerator::$NOTE_VALUES)
+						->withKey($signature)
+						->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
 						->build()
 						->toString();
 	}
@@ -141,16 +143,16 @@
 		<input type="button" id="btnSelectNoteNone" value="None" />
 		<input type="button" id="btnFiveFinger" value="5-Finger" />
 		<span id="spnErrorNote" class="error" style="display: none"></span>
+		<div><label id="lblRests" for="chkRests">Generate rests?: </label><input id="chkRests" name="chkRests" type="checkbox" value="true" <?= $rests ? "checked" : "" ?> /></div>
 		<div id="sampleMusic"><?php echo $keyScales[$selectedKey]; ?></div>
 		<div class="notediv">
 			<ul class="notelist">
-				<?php foreach(NoteGenerator::$NOTE_VALUES as $key => $name) {
+				<?php foreach(NoteGenerator::$NOTE_VALUES_NO_REST as $key => $name) {
 					echo "<li><input type=\"checkbox\" name=\"chkNoteValue[]\"" . (array_search($key, $noteValues) !== FALSE ? " checked=\"checked\" " : "") . " value=\"$key\" note=\"$name\" /></li>";
 				}
 				?>
 			</ul>
 		</div>
-		<!-- <div><label id="lblRests" for="chkRests">Generate rests?: </label><input id="chkRests" name="chkRests" type="checkbox" /></div> -->
 		<input id="btnSubmit" name="btnSubmit" type="submit" value="Generate!" />
 	</form>
 	<div class="push"></div>

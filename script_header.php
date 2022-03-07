@@ -5,7 +5,7 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="canonical" href="http://www.randomsheetmusic.com/" />
 <script type="text/javascript" src="js/abcjs_plugin_2.0-min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.6.4.min.js"></script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

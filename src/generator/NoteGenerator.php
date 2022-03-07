@@ -1,46 +1,77 @@
 <?php
 class NoteGenerator {
-	
-	public static $NOTE_VALUE_MAP = array(
-		0 => 'C',
-		1 => 'D',
-		2 => 'E',
-		3 => 'F',
-		4 => 'G',
-		5 => 'A',
-		6 => 'B',
-		7 => 'c',
-		8 => 'd',
-		9 => 'e',
-		10 => 'f',
-		11 => 'g'
+
+	public static $NOTE_VALUES_NO_REST = array(
+		'G,',
+		'A,',
+		'B,',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'A',
+		'B',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'a',
+		'b',
+		'c\''
 	);
-	
+	public static $NOTE_VALUES = array(
+		'G,',
+		'A,',
+		'B,',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'A',
+		'B',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'a',
+		'b',
+		'c\'',
+		'z'
+	);
+	public static $REST_VALUE = 18;
+
 	public static $WHOLE = 0;
 	public static $HALF = 1;
 	public static $QUARTER = 2;
 	public static $EIGHTH = 3;
-	
-	public static $NOTE_LENGTH_MAP = array(
-		0 => 'Whole',
-		1 => 'Half',
-		2 => 'Quarter',
-		3 => 'Eighth'
+
+	public static $NOTE_LENGTHS = array(
+		'Whole',
+		'Half',
+		'Quarter',
+		'Eighth'
 	);
-	
-	function generate($validNoteLengths, $validNoteValues) {
+
+	function generate($validNoteLengths, $validNoteValues, $rests) {
 		require_once dirname(__FILE__) . '/../domain/Note.php';
 
-		$noteValue = array_rand(self::$NOTE_VALUE_MAP);
+		if($rests) {
+			array_push($validNoteValues, self::$REST_VALUE);
+		}
+		$noteValue = array_rand(self::$NOTE_VALUES);
 		while(array_search($noteValue, $validNoteValues) === FALSE) {	// use === since this can return 0 as a valid value
-			$noteValue = array_rand(self::$NOTE_VALUE_MAP);
+			$noteValue = array_rand(self::$NOTE_VALUES);
 		}
-		
-		$noteLength = array_rand(self::$NOTE_LENGTH_MAP);
+
+		$noteLength = array_rand(self::$NOTE_LENGTHS);
 		while(array_search($noteLength, $validNoteLengths) === FALSE) {	// use === since this can return 0 as a valid value
-			$noteLength = array_rand(self::$NOTE_LENGTH_MAP);
+			$noteLength = array_rand(self::$NOTE_LENGTHS);
 		}
-		
+
 		return new Note($noteValue, $noteLength);
 	}
 }

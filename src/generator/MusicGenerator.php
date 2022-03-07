@@ -15,13 +15,15 @@ class MusicGenerator {
 	private $beatCounter;
 	private $measureCounter;
 	private $title;
+	private $rests;
 
-	public function __construct($numMeasures, $lengths, $values, $keySignature, $title) {
+	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests) {
 		$this->measureNumber = $numMeasures;
 		$this->noteLengthArr = $lengths;
 		$this->noteValueArr = $values;
 		$this->keySignature = $keySignature;
 		$this->title = $title;
+		$this->rests = $rests;
 	}
 
 	public function generateABC() {
@@ -100,7 +102,7 @@ class MusicGenerator {
 		require_once dirname(__FILE__) . '/NoteGenerator.php';
 
 		$noteGenerator = new NoteGenerator();
-		$note = $noteGenerator->generate($this->noteLengthArr, $this->noteValueArr);
+		$note = $noteGenerator->generate($this->noteLengthArr, $this->noteValueArr, $this->rests);
 
 		return $note;
 	}
