@@ -9,7 +9,8 @@
 	$selectedKey = array_key_exists("selKey", $_REQUEST) ? $_REQUEST["selKey"] : "C";
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
-
+	$twoHand = array_key_exists("chkTwoHand", $_REQUEST) ? $_REQUEST["chkTwoHand"] === "true" : false;
+	$twoHandNoteValues = array_key_exists("chkTwoHandNoteValue", $_REQUEST) ? $_REQUEST["chkTwoHandNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES_NO_REST));	// default is all of them
 
 	$keySignature = new KeySignature();
 	$signatureList = $keySignature->getKeySignatures();
@@ -77,12 +78,24 @@
 			$('.notelist li input[note=F]').prop('checked', true);
 			$('.notelist li input[note=G]').prop('checked', true);
 		});
+
 		$('select[name="selKey"]').change(function() {
 			$('#sampleMusic').html(keySignature[$(this).val()]);
+			$('#sampleTwoHandMusic').html(keySignature[$(this).val()]);
 
 			adjustMargins(margins[$(this).val()]);
 
 			ABCJS.plugin.start(jQuery);
+		});
+
+		$('#chkTwoHand').click(function() {
+			$('.twoHand').toggle();
+		});
+		$('#btnSelectTwoHandNoteAll').click(function() {
+			$('.noteTwoHandList li input').prop('checked', true);
+		});
+		$('#btnSelectTwoHandNoteNone').click(function() {
+			$('.noteTwoHandList li input').prop('checked', false);
 		});
 
 		$('#frmGenerate').submit(function(event) {
@@ -111,6 +124,9 @@
 	function adjustMargins(adjustment) {
 		$('.notediv').css('margin-left', adjustment.margin);
 		$('.notelist li').css('padding-right', adjustment.padding);
+
+		$('.noteTwoHandDiv').css('margin-left', adjustment.margin);
+		$('.noteTwoHandList li').css('padding-right', adjustment.padding);
 	}
 </script>
 </head>
@@ -148,7 +164,7 @@
 		<div><label id="lblRests" for="chkRests">Generate rests?: </label><input id="chkRests" name="chkRests" type="checkbox" value="true" <?= $rests ? "checked" : "" ?> /></div>
 		<div>
 			<label id="lblSharpsFlats" for="chkSharpsFlats">Generate random sharps/flats?: </label><input id="chkSharpsFlats" name="chkSharpsFlats" type="checkbox" value="true" <?= $sharpsFlats ? "checked" : "" ?> />
-			<span>(These currently do not take the key into account, so might look weird if anything other than "C" is selected)</span>
+			<span>(These currently do not take the key into account)</span>
 		</div>
 		<div id="sampleMusic"><?php echo $keyScales[$selectedKey]; ?></div>
 		<div class="notediv">
@@ -158,6 +174,25 @@
 				}
 				?>
 			</ul>
+		</div>
+
+		<div>
+			<label id="lblTwoHand" for="chkTwoHand">Grand Staff?: </label><input id="chkTwoHand" name="chkTwoHand" type="checkbox" value="true" <?= $twoHand ? "checked" : "" ?> />
+			<span>(Generate treble and bass clefs for the piano)</span>
+		</div>
+		<div class="twoHand" <?= !$twoHand ? "style=\"display: none\"" : "" ?> >
+			<label class="notelabel">Notes to generate:</label>
+			<input type="button" id="btnSelectTwoHandNoteAll" value="All" />
+			<input type="button" id="btnSelectTwoHandNoteNone" value="None" />
+			<div id="sampleTwoHandMusic"><?php echo $keyScales[$selectedKey]; ?></div>
+			<div class="noteTwoHandDiv">
+				<ul class="noteTwoHandList">
+					<?php foreach(NoteGenerator::$NOTE_VALUES_NO_REST as $key => $name) {
+						 echo "<li><input type=\"checkbox\" name=\"chkTwoHandNoteValue[]\"" . (array_search($key, $twoHandNoteValues) !== FALSE ? " checked=\"checked\" " : "") . " value=\"$key\" note=\"$name\" /></li>";
+					}
+					?>
+				</ul>
+			</div>
 		</div>
 		<input id="btnSubmit" name="btnSubmit" type="submit" value="Generate!" />
 	</form>

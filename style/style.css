@@ -28,6 +28,19 @@ body
 	position: relative;
 }
 
+.noteTwoHandList {
+  margin-top: 0px;
+}
+
+.noteTwoHandList li {
+  display: inline;
+  list-style-type: none;
+}
+
+.noteTwoHandDiv {
+  position: relative;
+}
+
 .error {
 	color: red;
 }

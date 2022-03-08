@@ -17,8 +17,10 @@ class MusicGenerator {
 	private $title;
 	private $rests;
 	private $sharpsFlats;
+	private $twoHand;
+	private $twoHandNoteValueArr;
 
-	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats) {
+	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats, $twoHand, $twoHandValues) {
 		$this->measureNumber = $numMeasures;
 		$this->noteLengthArr = $lengths;
 		$this->noteValueArr = $values;
@@ -26,6 +28,8 @@ class MusicGenerator {
 		$this->title = $title;
 		$this->rests = $rests;
 		$this->sharpsFlats = $sharpsFlats;
+		$this->twoHand = $twoHand;
+		$this->twoHandNoteValueArr = $twoHandValues;
 	}
 
 	public function generateABC() {
@@ -40,17 +44,35 @@ class MusicGenerator {
 		// add key, must be the last element in the tune header
 		$output .= "K:$this->keySignature<br/>";
 
+		$output .= "V:V1 clef=treble<br/>";
 		$this->beatCounter = 0;
 		$this->measureCounter = 0;
+		$output .= $this->generateMeasures($this->noteValueArr);
+
+		// add 2 hand clef if set
+		if($this->twoHand) {
+			$output .= "]<br/>";
+			$output .= "V:V2 clef=bass middle=d<br/>";
+			$this->beatCounter = 0;
+			$this->measureCounter = 0;
+			$output .= $this->generateMeasures($this->twoHandNoteValueArr);
+		}
+
+		$output .= ']';
+		return $output;
+	}
+
+	private function generateMeasures($noteValueArr) {
+		$output = "";
 		$lastEighthNote = false;
 		$lastNote = NULL;
 		while($this->measureCounter < $this->measureNumber) {
 			// generate the note
-			$note = $this->generateNote();
+			$note = $this->generateNote($noteValueArr);
 
 			// if the last note was an eighth, make sure the note that was generated is not more than eight notes away
 			while($lastNote && $lastNote->length == NoteGenerator::$EIGHTH && abs($lastNote->value - $note->value) >= 8 ) {
-				$note = $this->generateNote();
+				$note = $this->generateNote($noteValueArr);
 			}
 
 			// get the note time
@@ -94,15 +116,14 @@ class MusicGenerator {
 			$lastNote = $note;
 		}
 
-		$output .= ']';
 		return $output;
 	}
 
-	private function generateNote() {
+	private function generateNote($noteValueArr) {
 		require_once dirname(__FILE__) . '/NoteGenerator.php';
 
 		$noteGenerator = new NoteGenerator();
-		$note = $noteGenerator->generate($this->noteLengthArr, $this->noteValueArr, $this->rests, $this->sharpsFlats);
+		$note = $noteGenerator->generate($this->noteLengthArr, $noteValueArr, $this->rests, $this->sharpsFlats);
 
 		return $note;
 	}
