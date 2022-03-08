@@ -10,13 +10,15 @@ class AbcNotation {
 	private $noteLength;
 	private $macro;
 	private $keySignature;
+	private $voice;
 	private $noteList;
 
-	function __construct($referenceNumber, $noteLength, $macro, $keySignature, $noteList) {
+	function __construct($referenceNumber, $noteLength, $macro, $keySignature, $voice, $noteList) {
 		$this->referenceNumber = $referenceNumber;
 		$this->noteLength = $noteLength;
 		$this->macro = $macro;
 		$this->keySignature = $keySignature;
+		$this->voice = $voice;
 		$this->noteList = $noteList;
 	}
 
@@ -25,7 +27,7 @@ class AbcNotation {
 	}
 
 	public function toString() {
-		return "X:$this->referenceNumber<br/>L:$this->noteLength<br/>M:$this->macro<br/>K:$this->keySignature<br/>" . implode($this->noteList);
+		return "X:$this->referenceNumber<br/>L:$this->noteLength<br/>M:$this->macro<br/>K:$this->keySignature<br/>V:$this->voice<br/>" . implode($this->noteList);
 	}
 }
 
@@ -34,6 +36,7 @@ class AbcNotationBuilder {
 	private $noteLength;
 	private $macro;
 	private $keySignature;
+	private $voice;
 	private $noteList;
 
 	public function withReferenceNumber($referenceNumber) {
@@ -56,6 +59,11 @@ class AbcNotationBuilder {
 		return $this;
 	}
 
+	public function withVoice($voice) {
+		$this->voice = $voice;
+		return $this;
+	}
+
 	public function withNoteList($noteList) {
 		$this->noteList = $noteList;
 		return $this;
@@ -66,6 +74,7 @@ class AbcNotationBuilder {
 			$this->noteLength,
 			$this->macro,
 			$this->keySignature,
+			$this->voice,
 			$this->noteList);
 	}
 }

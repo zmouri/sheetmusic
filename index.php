@@ -20,6 +20,16 @@
 						->withNoteLength("1/1")
 						->withMacro("")	// hides the time signature
 						->withKey($signature)
+						->withVoice("V:V1 clef=treble")
+						->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
+						->build()
+						->toString();
+		$twoHandKeyScales[$signature] = AbcNotation::newBuilder()
+						->withReferenceNumber("1")
+						->withNoteLength("1/1")
+						->withMacro("")	// hides the time signature
+						->withKey($signature)
+						->withVoice("V:V2 clef=bass middle=d")
 						->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
 						->build()
 						->toString();
@@ -36,6 +46,11 @@
   	var keySignature = [];
   	<?php foreach($keyScales as $signature => $abcString) {
   		echo "keySignature[\"$signature\"] = \"$abcString\";\n";
+  	}
+  	?>
+  	var twoHandKeySignature = [];
+  	<?php foreach($twoHandKeyScales as $signature => $abcString) {
+  		echo "twoHandKeySignature[\"$signature\"] = \"$abcString\";\n";
   	}
   	?>
 
@@ -81,7 +96,7 @@
 
 		$('select[name="selKey"]').change(function() {
 			$('#sampleMusic').html(keySignature[$(this).val()]);
-			$('#sampleTwoHandMusic').html(keySignature[$(this).val()]);
+			$('#sampleTwoHandMusic').html(twoHandKeySignature[$(this).val()]);
 
 			adjustMargins(margins[$(this).val()]);
 
@@ -184,7 +199,7 @@
 			<label class="notelabel">Notes to generate:</label>
 			<input type="button" id="btnSelectTwoHandNoteAll" value="All" />
 			<input type="button" id="btnSelectTwoHandNoteNone" value="None" />
-			<div id="sampleTwoHandMusic"><?php echo $keyScales[$selectedKey]; ?></div>
+			<div id="sampleTwoHandMusic"><?php echo $twoHandKeyScales[$selectedKey]; ?></div>
 			<div class="noteTwoHandDiv">
 				<ul class="noteTwoHandList">
 					<?php foreach(NoteGenerator::$NOTE_VALUES_NO_REST as $key => $name) {
