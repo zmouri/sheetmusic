@@ -72,9 +72,9 @@ class NoteGenerator {
 			$noteLength = array_rand(self::$NOTE_LENGTHS);
 		}
 
-		// generate a random modifier
 		$noteModifier = "";
-		if($sharpsFlats) {
+		// make sure not to generate sharps/flats for a rest
+		if($sharpsFlats && $noteValue !== self::$REST_VALUE) {
 			// 25% chance for a sharp or flat
 			$rand = random_int(1,8);
 			if($rand === 7) {
