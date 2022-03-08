@@ -49,6 +49,11 @@ class MusicGenerator {
 		// add key, must be the last element in the tune header
 		$output .= "K:$this->keySignature<br/>";
 
+		if($this->twoHand) {
+			// for two hand, group the voices together
+			$output .= "%%score {V1 | V2}<br/>";
+		}
+
 		$output .= "V:V1 clef=treble<br/>";
 		$this->beatCounter = 0;
 		$this->measureCounter = 0;
@@ -63,7 +68,7 @@ class MusicGenerator {
 			$output .= $this->generateMeasures($this->twoHandNoteValueArr);
 		}
 
-		$output .= ']';
+		$output .= "]";
 		return $output;
 	}
 
