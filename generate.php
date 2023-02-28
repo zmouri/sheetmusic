@@ -7,6 +7,7 @@
 	$selKey = $_REQUEST["selKey"];
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
+	$noRepeat = array_key_exists("chkNoRepeat", $_REQUEST) ? $_REQUEST["chkNoRepeat"] === "true" : false;
 	$twoHand = (array_key_exists("chkTwoHand", $_REQUEST) && array_key_exists("chkTwoHandNoteValue", $_REQUEST)) ? $_REQUEST["chkTwoHand"] === "true" : false;
 	$twoHandNoteValues = $_REQUEST["chkTwoHandNoteValue"];
 	$errorMessage = "";
@@ -22,7 +23,7 @@
 			$errorMessage = "Too many measures! Was only able to generate 5000.";
 			$measureNumber = 5000;
 		}
-		$musicGenerator = new MusicGenerator((int)$measureNumber, $noteLengths, $noteValues, $selKey, $title, $rests, $sharpsFlats, $twoHand, $twoHandNoteValues);
+		$musicGenerator = new MusicGenerator((int)$measureNumber, $noteLengths, $noteValues, $selKey, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandNoteValues);
 		$music = $musicGenerator->generateABC();
 	}
 ?>

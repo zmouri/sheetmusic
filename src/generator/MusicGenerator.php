@@ -19,11 +19,12 @@ class MusicGenerator {
 	private $title;
 	private $rests;
 	private $sharpsFlats;
+	private $noRepeat;
 	private $twoHand;
 	private $twoHandNoteValueArr;
 	private $noteGenerator;
 
-	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats, $twoHand, $twoHandValues) {
+	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandValues) {
 		$this->measureNumber = $numMeasures;
 		$this->noteLengthArr = $lengths;
 		$this->noteValueArr = $values;
@@ -31,6 +32,7 @@ class MusicGenerator {
 		$this->title = $title;
 		$this->rests = $rests;
 		$this->sharpsFlats = $sharpsFlats;
+		$this->noRepeat = $noRepeat;
 		$this->twoHand = $twoHand;
 		$this->twoHandNoteValueArr = $twoHandValues;
 
@@ -80,12 +82,19 @@ class MusicGenerator {
 			// generate the note
 			// make sure not to generate two rests in a row because unmerged rests will look weird
 			$lastRestNote = ($lastNote && $lastNote->value == NoteGenerator::$REST_VALUE);
-			$note = $this->generateNote($noteValueArr, $lastRestNote);
+
+			// copy the array so that we can remove notes that we don't want to generate (i.e. the last note)
+			$adjustedNoteValueArr = $noteValueArr;
+			if($lastNote && $this->noRepeat && count($adjustedNoteValueArr) > 1) {
+				$lastNoteIndex = array_search($lastNote->value, $adjustedNoteValueArr);
+				unset($adjustedNoteValueArr[$lastNoteIndex]);
+			}
+			$note = $this->generateNote($adjustedNoteValueArr, $lastRestNote);
 
 			// if the last note was an eighth, make sure the note that was generated is not more than eight notes away because that makes your hand stretch too much
 			// rests are ok though
 			while($lastNote && $lastNote->value != NoteGenerator::$REST_VALUE && $lastNote->length == NoteGenerator::$EIGHTH && abs($lastNote->value - $note->value) >= 8 ) {
-				$note = $this->generateNote($noteValueArr, $lastRestNote);
+				$note = $this->generateNote($adjustedNoteValueArr, $lastRestNote);
 			}
 
 			// get the note time

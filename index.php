@@ -9,6 +9,7 @@
 	$selectedKey = array_key_exists("selKey", $_REQUEST) ? $_REQUEST["selKey"] : "C";
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
+	$noRepeat = array_key_exists("chkNoRepeat", $_REQUEST) ? $_REQUEST["chkNoRepeat"] === "true" : false;
 	$twoHand = array_key_exists("chkTwoHand", $_REQUEST) ? $_REQUEST["chkTwoHand"] === "true" : false;
 	$twoHandNoteValues = array_key_exists("chkTwoHandNoteValue", $_REQUEST) ? $_REQUEST["chkTwoHandNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES_NO_REST));	// default is all of them
 
@@ -130,6 +131,12 @@
 				return false;
 			}
 
+			if ($('#chkNoRepeat').is(':checked') && $('.notelist li input').filter(':checked').length === 1) {
+				$('#spnErrorNote').css('display', 'inline');
+				$('#spnErrorNote').html('At least two notes must be included in order to avoid repeats!');
+				return false;
+			}
+
 			return true;
 		});
 
@@ -180,6 +187,10 @@
 		<div>
 			<label id="lblSharpsFlats" for="chkSharpsFlats">Generate random sharps/flats?: </label><input id="chkSharpsFlats" name="chkSharpsFlats" type="checkbox" value="true" <?= $sharpsFlats ? "checked" : "" ?> />
 			<span>(These currently do not take the key into account)</span>
+		</div>
+		<div>
+			<label id="lblNoRepeat" for="chkNoRepeat">Avoid repeated notes?: </label><input id="chkNoRepeat" name="chkNoRepeat" type="checkbox" value="true" <?= $noRepeat ? "checked" : "" ?> />
+			<span>(This will not generate two of the same note in a row)</span>
 		</div>
 		<div id="sampleMusic"><?php echo $keyScales[$selectedKey]; ?></div>
 		<div class="notediv">
