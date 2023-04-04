@@ -4,6 +4,7 @@
 	$measureNumber = $_REQUEST["txtMeasureNumber"];
 	$noteLengths = $_REQUEST["chkNoteLength"];
 	$noteValues = $_REQUEST["chkNoteValue"];
+	$selClef = $_REQUEST["selClef"];
 	$selKey = $_REQUEST["selKey"];
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
@@ -23,7 +24,7 @@
 			$errorMessage = "Too many measures! Was only able to generate 5000.";
 			$measureNumber = 5000;
 		}
-		$musicGenerator = new MusicGenerator((int)$measureNumber, $noteLengths, $noteValues, $selKey, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandNoteValues);
+		$musicGenerator = new MusicGenerator((int)$measureNumber, $noteLengths, $noteValues, $selClef, $selKey, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandNoteValues);
 		$music = $musicGenerator->generateABC();
 	}
 ?>

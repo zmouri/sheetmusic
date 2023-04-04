@@ -13,6 +13,7 @@ class MusicGenerator {
 	private $measureNumber;
 	private $noteLengthArr;
 	private $noteValueArr;
+	private $clef;
 	private $keySignature;
 	private $beatCounter;
 	private $measureCounter;
@@ -24,10 +25,11 @@ class MusicGenerator {
 	private $twoHandNoteValueArr;
 	private $noteGenerator;
 
-	public function __construct($numMeasures, $lengths, $values, $keySignature, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandValues) {
+	public function __construct($numMeasures, $lengths, $values, $clef, $keySignature, $title, $rests, $sharpsFlats, $noRepeat, $twoHand, $twoHandValues) {
 		$this->measureNumber = $numMeasures;
 		$this->noteLengthArr = $lengths;
 		$this->noteValueArr = $values;
+		$this->clef = $clef;
 		$this->keySignature = $keySignature;
 		$this->title = $title;
 		$this->rests = $rests;
@@ -56,7 +58,7 @@ class MusicGenerator {
 			$output .= "%%score {V1 | V2}<br/>";
 		}
 
-		$output .= "V:V1 clef=treble<br/>";
+		$output .= "V:V1 clef=$this->clef middle=B<br/>";
 		$this->beatCounter = 0;
 		$this->measureCounter = 0;
 		$output .= $this->generateMeasures($this->noteValueArr);

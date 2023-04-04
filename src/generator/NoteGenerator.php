@@ -1,6 +1,12 @@
 <?php
 class NoteGenerator {
 
+	public static $CLEF_VALUES = array(
+		'treble',
+		'bass',
+		'alto'
+	);
+
 	public static $NOTE_VALUES_NO_REST = array(
 		'E,',
 		'F,',

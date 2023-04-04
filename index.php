@@ -6,6 +6,7 @@
 	$measureNumber = array_key_exists("txtMeasureNumber", $_REQUEST) ? $_REQUEST["txtMeasureNumber"] : "30";
 	$noteLengths = array_key_exists("chkNoteLength", $_REQUEST) ? $_REQUEST["chkNoteLength"] : range(0, count(NoteGenerator::$NOTE_LENGTHS));	// default is all of them
 	$noteValues = array_key_exists("chkNoteValue", $_REQUEST) ? $_REQUEST["chkNoteValue"] : range(0, count(NoteGenerator::$NOTE_VALUES_NO_REST));	// default is all of them
+	$selectedClef = array_key_exists("selClef", $_REQUEST) ? $_REQUEST["selClef"] : "treble";
 	$selectedKey = array_key_exists("selKey", $_REQUEST) ? $_REQUEST["selKey"] : "C";
 	$rests = array_key_exists("chkRests", $_REQUEST) ? $_REQUEST["chkRests"] === "true" : false;
 	$sharpsFlats = array_key_exists("chkSharpsFlats", $_REQUEST) ? $_REQUEST["chkSharpsFlats"] === "true" : false;
@@ -16,15 +17,17 @@
 	$keySignature = new KeySignature();
 	$signatureList = $keySignature->getKeySignatures();
 	foreach($signatureList as $signature => $notes) {
-		$keyScales[$signature] = AbcNotation::newBuilder()
-						->withReferenceNumber("1")
-						->withNoteLength("1/1")
-						->withMacro("")	// hides the time signature
-						->withKey($signature)
-						->withVoice("V:V1 clef=treble")
-						->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
-						->build()
-						->toString();
+		foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+			$keyScales[$clef][$signature] = AbcNotation::newBuilder()
+							->withReferenceNumber("1")
+							->withNoteLength("1/1")
+							->withMacro("")	// hides the time signature
+							->withKey($signature)
+							->withVoice("V:V1 clef=$clef middle=B")
+							->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
+							->build()
+							->toString();
+		}
 		$twoHandKeyScales[$signature] = AbcNotation::newBuilder()
 						->withReferenceNumber("1")
 						->withNoteLength("1/1")
@@ -45,8 +48,11 @@
   	ABCJS.plugin.hide_abc = true;
 
   	var keySignature = [];
-  	<?php foreach($keyScales as $signature => $abcString) {
-  		echo "keySignature[\"$signature\"] = \"$abcString\";\n";
+  	<?php foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+  		echo "keySignature[\"$clef\"] = [];\n";
+  		foreach($keyScales[$clef] as $signature => $abcString) {
+  			echo "keySignature[\"$clef\"][\"$signature\"] = \"$abcString\";\n";
+  		}
   	}
   	?>
   	var twoHandKeySignature = [];
@@ -95,8 +101,17 @@
 			$('.notelist li input[note=G]').prop('checked', true);
 		});
 
+		$('select[name="selClef"]').change(function() {
+			$('#sampleMusic').html(keySignature[$(this).val()][$('select[name="selKey"]').val()]);
+			$('#sampleTwoHandMusic').html(twoHandKeySignature[$(this).val()]);
+
+			adjustMargins(margins[$('select[name="selKey"]').val()]);
+
+			ABCJS.plugin.start(jQuery);
+		});
+
 		$('select[name="selKey"]').change(function() {
-			$('#sampleMusic').html(keySignature[$(this).val()]);
+			$('#sampleMusic').html(keySignature[$('select[name="selClef"]').val()][$(this).val()]);
 			$('#sampleTwoHandMusic').html(twoHandKeySignature[$(this).val()]);
 
 			adjustMargins(margins[$(this).val()]);
@@ -170,6 +185,15 @@
 			</ul>
 		</div>
 		<div>
+			<label id="lblClef" for="selClef">Clef: </label>
+			<select name="selClef">
+				<?php foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+					echo "<option value=\"$clef\"" . ($clef == $selectedClef ? " selected " : "") . ">$clef</option>";
+				}
+				?>
+			</select>
+		</div>
+		<div>
 			<label id="lblKey" for="selKey">Key to generate: </label>
 			<select name="selKey">
 				<?php foreach($signatureList as $signature => $notes) {
@@ -192,7 +216,7 @@
 			<label id="lblNoRepeat" for="chkNoRepeat">Avoid repeated notes?: </label><input id="chkNoRepeat" name="chkNoRepeat" type="checkbox" value="true" <?= $noRepeat ? "checked" : "" ?> />
 			<span>(This will not generate two of the same note in a row)</span>
 		</div>
-		<div id="sampleMusic"><?php echo $keyScales[$selectedKey]; ?></div>
+		<div id="sampleMusic"><?php echo $keyScales[$selectedClef][$selectedKey]; ?></div>
 		<div class="notediv">
 			<ul class="notelist">
 				<?php foreach(NoteGenerator::$NOTE_VALUES_NO_REST as $key => $name) {
@@ -204,7 +228,7 @@
 
 		<div>
 			<label id="lblTwoHand" for="chkTwoHand">Grand Staff?: </label><input id="chkTwoHand" name="chkTwoHand" type="checkbox" value="true" <?= $twoHand ? "checked" : "" ?> />
-			<span>(Generate treble and bass clefs for the piano)</span>
+			<span>(Generate an additional bass clef for the piano)</span>
 		</div>
 		<div class="twoHand" <?= !$twoHand ? "style=\"display: none\"" : "" ?> >
 			<label class="notelabel">Notes to generate:</label>
