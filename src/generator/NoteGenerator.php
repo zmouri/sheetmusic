@@ -50,7 +50,7 @@ class NoteGenerator {
 		'e\'',
 		'z'
 	);
-	public static $REST_VALUE = 18;
+	public static $REST_VALUE = 22;
 
 	public static $WHOLE = 0;
 	public static $HALF = 1;
