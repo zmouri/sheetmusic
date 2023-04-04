@@ -2,26 +2,8 @@
 class NoteGenerator {
 
 	public static $NOTE_VALUES_NO_REST = array(
-		'G,',
-		'A,',
-		'B,',
-		'C',
-		'D',
-		'E',
-		'F',
-		'G',
-		'A',
-		'B',
-		'c',
-		'd',
-		'e',
-		'f',
-		'g',
-		'a',
-		'b',
-		'c\''
-	);
-	public static $NOTE_VALUES = array(
+		'E,',
+		'F,',
 		'G,',
 		'A,',
 		'B,',
@@ -40,6 +22,32 @@ class NoteGenerator {
 		'a',
 		'b',
 		'c\'',
+		'd\'',
+		'e\''
+	);
+	public static $NOTE_VALUES = array(
+		'E,',
+		'F,',
+		'G,',
+		'A,',
+		'B,',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'A',
+		'B',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'a',
+		'b',
+		'c\'',
+		'd\'',
+		'e\'',
 		'z'
 	);
 	public static $REST_VALUE = 18;

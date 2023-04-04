@@ -56,21 +56,21 @@
   	?>
 
 	var margins = [];
-  	margins["C"] = { "margin" : 9, "padding" : 19 };
-	margins["G"] = { "margin" : 21, "padding" : 18 };
-	margins["D"] = { "margin" : 31, "padding" : 18 };
-	margins["A"] = { "margin" : 42, "padding" : 17 };
-	margins["E"] = { "margin" : 53, "padding" : 17 };
-	margins["B"] = { "margin" : 64, "padding" : 16 };
-	margins["F#"] = { "margin" : 75, "padding" : 16 };
-	margins["C#"] = { "margin" : 86, "padding" : 15 };
-	margins["F"] = { "margin" : 19, "padding" : 19 };
-	margins["Bb"] = { "margin" : 29, "padding" : 18 };
-	margins["Eb"] = { "margin" : 39, "padding" : 17 };
-	margins["Ab"] = { "margin" : 49, "padding" : 17 };
-	margins["Db"] = { "margin" : 59, "padding" : 16 };
-	margins["Gb"] = { "margin" : 69, "padding" : 16 };
-	margins["Cb"] = { "margin" : 79, "padding" : 15 };
+  	margins["C"] = { "margin" : 9, "padding" : 12 };
+	margins["G"] = { "margin" : 21, "padding" : 12 };
+	margins["D"] = { "margin" : 31, "padding" : 11 };
+	margins["A"] = { "margin" : 42, "padding" : 11 };
+	margins["E"] = { "margin" : 53, "padding" : 10 };
+	margins["B"] = { "margin" : 64, "padding" : 10 };
+	margins["F#"] = { "margin" : 75, "padding" : 9 };
+	margins["C#"] = { "margin" : 86, "padding" : 9 };
+	margins["F"] = { "margin" : 19, "padding" : 12 };
+	margins["Bb"] = { "margin" : 29, "padding" : 11 };
+	margins["Eb"] = { "margin" : 39, "padding" : 11 };
+	margins["Ab"] = { "margin" : 49, "padding" : 10 };
+	margins["Db"] = { "margin" : 59, "padding" : 10 };
+	margins["Gb"] = { "margin" : 69, "padding" : 9 };
+	margins["Cb"] = { "margin" : 79, "padding" : 9 };
 
 	$(document).ready(function() {
 		$('#btnSelectLengthAll').click(function() {
