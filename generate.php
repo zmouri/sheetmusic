@@ -45,10 +45,10 @@
 			window.location.replace('index.php' + window.location.search);
 		});
 		$('#txtTempo').change(function() {
-			ABCJS.renderAbc("notation", music.replace(/Q:1\/4=[0-9]*/, "Q:1/4=" + $(this).val()));
+			ABCJS.renderAbc("render", music.replace(/Q:1\/4=[0-9]*/, "Q:1/4=" + $(this).val()), { response: "resize" });
 		});
 
-		ABCJS.renderAbc("notation", music);
+		ABCJS.renderAbc("render", music, { responsive: "resize" } );
 	});
 </script>
 </head>
@@ -57,7 +57,9 @@
 	<div><label id="lblTempo" for="txtTempo">Tempo: </label><input id="txtTempo" name="txtTempo" type="text" value="<?php echo $tempo; ?>" /></div>
 	<div class="print"><input id="btnPrint" name="btnPrint" type="button" value="Print!" /></div>
 	<div id="error"><?= $errorMessage ?></div>
-	<div id="notation"></div>
+	<div id="notation" class="notation">
+		<div id="render"></div>
+	</div>
 	<input id="btnBack" name="btnBack" type="button" value="<<< Back to start" />
 </body>
 </html>

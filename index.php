@@ -17,13 +17,13 @@
 	$keySignature = new KeySignature();
 	$signatureList = $keySignature->getKeySignatures();
 	foreach($signatureList as $signature => $notes) {
-		foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+		foreach(NoteGenerator::$CLEF_VALUES as $clef => $octave) {
 			$keyScales[$clef][$signature] = AbcNotation::newBuilder()
 							->withReferenceNumber("1")
 							->withNoteLength("1/1")
 							->withMacro("")	// hides the time signature
 							->withKey("$signature")
-							->withVoice("V:V1 clef=$clef octave=0")
+							->withVoice("V:V1 clef=$clef octave=$octave")
 							->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
 							->build()
 							->toString();
@@ -45,7 +45,7 @@
 <?php require_once dirname(__FILE__) . '/script_header.php'; ?>
 <script type="text/javascript">
   	var keySignature = [];
-  	<?php foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+  	<?php foreach(NoteGenerator::$CLEF_VALUES as $clef => $octave) {
   		echo "keySignature[\"$clef\"] = [];\n";
   		foreach($keyScales[$clef] as $signature => $abcString) {
   			echo "keySignature[\"$clef\"][\"$signature\"] = \"$abcString\";\n";
@@ -183,7 +183,7 @@
 		<div>
 			<label id="lblClef" for="selClef">Clef: </label>
 			<select name="selClef">
-				<?php foreach(NoteGenerator::$CLEF_VALUES as $clef) {
+				<?php foreach(NoteGenerator::$CLEF_VALUES as $clef => $octave) {
 					echo "<option value=\"$clef\"" . ($clef == $selectedClef ? " selected " : "") . ">$clef</option>";
 				}
 				?>

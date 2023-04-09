@@ -58,7 +58,8 @@ class MusicGenerator {
 			$output .= "%%score {V1 | V2}\\n";
 		}
 
-		$output .= "V:V1 clef=$this->clef\\n";
+		$octave = NoteGenerator::$CLEF_VALUES[$this->clef];
+		$output .= "V:V1 clef=$this->clef octave=$octave\\n";
 		$this->beatCounter = 0;
 		$this->measureCounter = 0;
 		$output .= $this->generateMeasures($this->noteValueArr);

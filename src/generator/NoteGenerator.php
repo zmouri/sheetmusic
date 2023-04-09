@@ -2,9 +2,9 @@
 class NoteGenerator {
 
 	public static $CLEF_VALUES = array(
-		'treble',
-		'bass',
-		'alto'
+		'treble' => 0,
+		'bass' => -2,
+		'alto' => -1
 	);
 
 	public static $NOTE_VALUES_NO_REST = array(

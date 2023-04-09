@@ -45,7 +45,7 @@ body
 	color: red;
 }
 
-.print {
+.print, .notation {
 	width: 770px;
 }
 
