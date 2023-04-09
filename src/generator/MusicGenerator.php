@@ -44,29 +44,29 @@ class MusicGenerator {
 	public function generateABC() {
 		$output = "";
 		foreach(self::$ABC_CONSTANTS as $notation => $val) {
-			$output .= "$notation:$val<br/>";
+			$output .= "$notation:$val\\n";
 		}
 
 		// add title
-		$output .= "T:$this->title<br/>";
+		$output .= "T:$this->title\\n";
 
 		// add key, must be the last element in the tune header
-		$output .= "K:$this->keySignature<br/>";
+		$output .= "K:$this->keySignature\\n";
 
 		if($this->twoHand) {
 			// for two hand, group the voices together
-			$output .= "%%score {V1 | V2}<br/>";
+			$output .= "%%score {V1 | V2}\\n";
 		}
 
-		$output .= "V:V1 clef=$this->clef middle=B<br/>";
+		$output .= "V:V1 clef=$this->clef\\n";
 		$this->beatCounter = 0;
 		$this->measureCounter = 0;
 		$output .= $this->generateMeasures($this->noteValueArr);
 
 		// add 2 hand clef if set
 		if($this->twoHand) {
-			$output .= "]<br/>";
-			$output .= "V:V2 clef=bass middle=d<br/>";
+			$output .= "]\\n";
+			$output .= "V:V2 clef=bass middle=d\\n";
 			$this->beatCounter = 0;
 			$this->measureCounter = 0;
 			$output .= $this->generateMeasures($this->twoHandNoteValueArr);
@@ -155,7 +155,7 @@ class MusicGenerator {
 		// every 4 measures, new line
 		$this->measureCounter++;
 		if($this->measureCounter % 4 == 0 && $this->measureCounter < $this->measureNumber) {
-			$out .= "<br/>";
+			$out .= "\\n";
 		}
 
 		// space after the bar if we're not at the end

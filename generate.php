@@ -33,8 +33,7 @@
 <head>
 <?php require_once dirname(__FILE__) . '/script_header.php'; ?>
 <script type="text/javascript">
-  	ABCJS.plugin.show_midi = true;
-  	ABCJS.plugin.hide_abc = true;
+	var music = "<?php echo $music;?>";
 	$(document).ready(function() {
 		$('#btnRefresh').click(function() {
 			location.reload();
@@ -46,11 +45,10 @@
 			window.location.replace('index.php' + window.location.search);
 		});
 		$('#txtTempo').change(function() {
-			music = "<?php echo $music;?>";
-			$('#notation').html(music.replace(/Q:1\/4=[0-9]*/, "Q:1/4=" + $(this).val()));
-
-			ABCJS.plugin.start(jQuery);
+			ABCJS.renderAbc("notation", music.replace(/Q:1\/4=[0-9]*/, "Q:1/4=" + $(this).val()));
 		});
+
+		ABCJS.renderAbc("notation", music);
 	});
 </script>
 </head>
@@ -59,9 +57,7 @@
 	<div><label id="lblTempo" for="txtTempo">Tempo: </label><input id="txtTempo" name="txtTempo" type="text" value="<?php echo $tempo; ?>" /></div>
 	<div class="print"><input id="btnPrint" name="btnPrint" type="button" value="Print!" /></div>
 	<div id="error"><?= $errorMessage ?></div>
-	<div id="notation">
-		<?php echo $music;?>
-	</div>
+	<div id="notation"></div>
 	<input id="btnBack" name="btnBack" type="button" value="<<< Back to start" />
 </body>
 </html>

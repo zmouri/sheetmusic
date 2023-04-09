@@ -27,7 +27,7 @@ class AbcNotation {
 	}
 
 	public function toString() {
-		return "X:$this->referenceNumber<br/>L:$this->noteLength<br/>M:$this->macro<br/>K:$this->keySignature<br/>V:$this->voice<br/>" . implode($this->noteList);
+		return "X:$this->referenceNumber\\nL:$this->noteLength\\nM:$this->macro\\nK:$this->keySignature\\nV:$this->voice\\n" . implode($this->noteList);
 	}
 }
 

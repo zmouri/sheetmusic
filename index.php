@@ -22,8 +22,8 @@
 							->withReferenceNumber("1")
 							->withNoteLength("1/1")
 							->withMacro("")	// hides the time signature
-							->withKey($signature)
-							->withVoice("V:V1 clef=$clef middle=B")
+							->withKey("$signature")
+							->withVoice("V:V1 clef=$clef octave=0")
 							->withNoteList(NoteGenerator::$NOTE_VALUES_NO_REST)
 							->build()
 							->toString();
@@ -44,9 +44,6 @@
 <head>
 <?php require_once dirname(__FILE__) . '/script_header.php'; ?>
 <script type="text/javascript">
-  	ABCJS.plugin.show_midi = false;
-  	ABCJS.plugin.hide_abc = true;
-
   	var keySignature = [];
   	<?php foreach(NoteGenerator::$CLEF_VALUES as $clef) {
   		echo "keySignature[\"$clef\"] = [];\n";
@@ -102,21 +99,17 @@
 		});
 
 		$('select[name="selClef"]').change(function() {
-			$('#sampleMusic').html(keySignature[$(this).val()][$('select[name="selKey"]').val()]);
-			$('#sampleTwoHandMusic').html(twoHandKeySignature[$(this).val()]);
-
 			adjustMargins(margins[$('select[name="selKey"]').val()]);
 
-			ABCJS.plugin.start(jQuery);
+			ABCJS.renderAbc("sampleMusic", keySignature[$(this).val()][$('select[name="selKey"]').val()]);
+			ABCJS.renderAbc("sampleTwoHandMusic", twoHandKeySignature[$('select[name="selKey"]').val()]);
 		});
 
 		$('select[name="selKey"]').change(function() {
-			$('#sampleMusic').html(keySignature[$('select[name="selClef"]').val()][$(this).val()]);
-			$('#sampleTwoHandMusic').html(twoHandKeySignature[$(this).val()]);
-
 			adjustMargins(margins[$(this).val()]);
 
-			ABCJS.plugin.start(jQuery);
+			ABCJS.renderAbc("sampleMusic", keySignature[$('select[name="selClef"]').val()][$(this).val()]);
+			ABCJS.renderAbc("sampleTwoHandMusic", twoHandKeySignature[$(this).val()]);
 		});
 
 		$('#chkTwoHand').click(function() {
@@ -156,6 +149,9 @@
 		});
 
 		adjustMargins(margins["<?php echo $selectedKey; ?>"]);
+
+		ABCJS.renderAbc("sampleMusic", keySignature[$('select[name="selClef"]').val()][$('select[name="selKey"]').val()]);
+		ABCJS.renderAbc("sampleTwoHandMusic", twoHandKeySignature[$('select[name="selKey"]').val()]);
 	});
 
 	function adjustMargins(adjustment) {
@@ -216,7 +212,7 @@
 			<label id="lblNoRepeat" for="chkNoRepeat">Avoid repeated notes?: </label><input id="chkNoRepeat" name="chkNoRepeat" type="checkbox" value="true" <?= $noRepeat ? "checked" : "" ?> />
 			<span>(This will not generate two of the same note in a row)</span>
 		</div>
-		<div id="sampleMusic"><?php echo $keyScales[$selectedClef][$selectedKey]; ?></div>
+		<div id="sampleMusic"></div>
 		<div class="notediv">
 			<ul class="notelist">
 				<?php foreach(NoteGenerator::$NOTE_VALUES_NO_REST as $key => $name) {
