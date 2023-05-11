@@ -6,18 +6,12 @@
 <link rel="canonical" href="http://www.randomsheetmusic.com/" />
 <script type="text/javascript" src="js/abcjs_basic_6.2-min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script type="text/javascript">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WLMQ0LYF8L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-3321765-4']);
-  _gaq.push(['_setDomainName', 'none']);
-  _gaq.push(['_setAllowLinker', true]);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+  gtag('config', 'G-WLMQ0LYF8L');
 </script>
